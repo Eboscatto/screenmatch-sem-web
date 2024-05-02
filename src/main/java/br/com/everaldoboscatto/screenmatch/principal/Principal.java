@@ -37,7 +37,7 @@ public class Principal {
                     buscarEpisodioPorSerie();
                     break;
                 case 3:
-                    listarSeriesBuscacada();
+                    listarSeriesBuscacadas();
                     break;
                 case 0:
                     System.out.println("Encerrando sistema...");
@@ -84,7 +84,7 @@ public class Principal {
             System.out.println("\nImprimindo Temporadas:");
             listaTemporadas.forEach(System.out::println); // (::) = método de referência
         }
-        private void listarSeriesBuscacada() {
+        private void listarSeriesBuscacadas() {
             dadosSeries.forEach(System.out::println);
         }
 }
