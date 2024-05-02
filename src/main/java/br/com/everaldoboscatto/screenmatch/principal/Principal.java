@@ -1,11 +1,13 @@
 package br.com.everaldoboscatto.screenmatch.principal;
 import br.com.everaldoboscatto.screenmatch.model.DadosSerie;
 import br.com.everaldoboscatto.screenmatch.model.DadosTemporada;
+import br.com.everaldoboscatto.screenmatch.model.Serie;
 import br.com.everaldoboscatto.screenmatch.service.ConsumoAPI;
 import br.com.everaldoboscatto.screenmatch.service.ConverterDados;
 import ch.qos.logback.core.encoder.JsonEscapeUtil;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Principal {
     private Scanner leitura = new Scanner(System.in);
@@ -85,6 +87,15 @@ public class Principal {
             listaTemporadas.forEach(System.out::println); // (::) = método de referência
         }
         private void listarSeriesBuscadas() {
-            dadosSeries.forEach(System.out::println);
+        //dadosSeries.forEach(System.out::println);
+
+        // Criar lista de séries
+            List<Serie> series = new ArrayList<>();
+            series = dadosSeries.stream()
+                    .map(d -> new Serie(d))
+                    .collect(Collectors.toList());
+            series.stream()
+                    .sorted(Comparator.comparing(Serie::getGenero))
+                    .forEach(System.out::println);
         }
 }
