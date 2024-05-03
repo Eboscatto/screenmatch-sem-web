@@ -13,7 +13,7 @@ public record DadosSerie(@JsonAlias("Title") String titulo, // Dizendo que Title
                          @JsonAlias("Genre") String genero,
                          @JsonAlias("Atores") String atores,
                          @JsonAlias("Poster") String poster,
-                         @JsonAlias("plot") String sinopse) {
+                         @JsonAlias("Plot") String sinopse) {
 }
 // O Jackson tem a notação  JsonAlias e JsonProperty, ver no material  de apoio.
 

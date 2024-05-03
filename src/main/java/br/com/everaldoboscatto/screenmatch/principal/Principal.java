@@ -52,7 +52,7 @@ public class Principal {
         private void buscarSerieWeb () {
             DadosSerie dados = getDadosSerie();
             dadosSeries.add(dados);
-            System.out.println("\nImprimindo dados da série:\n" + dados);
+            System.out.println("\nImprimindo dados da série buscada:\n" + dados);
         }
         private DadosSerie getDadosSerie () {
             System.out.println("Digite o nome da série que de desja buscar:");
@@ -86,16 +86,21 @@ public class Principal {
             System.out.println("\nImprimindo Temporadas:");
             listaTemporadas.forEach(System.out::println); // (::) = método de referência
         }
+
         private void listarSeriesBuscadas() {
-        //dadosSeries.forEach(System.out::println);
+            System.out.println("\nSéries buscadas:");
+        dadosSeries.forEach(System.out::println);
+
+
 
         // Criar lista de séries
+            System.out.println("\nSéries agrupadas por gênero:");
             List<Serie> series = new ArrayList<>();
             series = dadosSeries.stream()
                     .map(d -> new Serie(d))
                     .collect(Collectors.toList());
             series.stream()
-                    .sorted(Comparator.comparing(Serie::getGenero))
+                    .sorted(Comparator.comparing(Serie::getGenero)) // Ordena séries por gênero/categoria
                     .forEach(System.out::println);
         }
 }
