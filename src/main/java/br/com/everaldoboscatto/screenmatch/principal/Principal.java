@@ -2,9 +2,11 @@ package br.com.everaldoboscatto.screenmatch.principal;
 import br.com.everaldoboscatto.screenmatch.model.DadosSerie;
 import br.com.everaldoboscatto.screenmatch.model.DadosTemporada;
 import br.com.everaldoboscatto.screenmatch.model.Serie;
+import br.com.everaldoboscatto.screenmatch.repository.SerieRepository;
 import br.com.everaldoboscatto.screenmatch.service.ConsumoAPI;
 import br.com.everaldoboscatto.screenmatch.service.ConverterDados;
 import ch.qos.logback.core.encoder.JsonEscapeUtil;
+import org.antlr.v4.runtime.misc.LogManager;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,6 +18,10 @@ public class Principal {
     private final String ENDERECO = "https://www.omdbapi.com/?t="; // Constante
     private final String API_KEY = "&apikey=2f196da8"; // Constante
     private List<DadosSerie> dadosSeries = new ArrayList<>();
+    private SerieRepository repositorio;
+    public Principal(SerieRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
     public void exibeMenu() {
         var opcao = -1;
@@ -51,7 +57,9 @@ public class Principal {
     }
         private void buscarSerieWeb () {
             DadosSerie dados = getDadosSerie();
-            dadosSeries.add(dados);
+            Serie serie = new Serie(dados);
+            //dadosSeries.add(dados);
+            repositorio.save(serie);
             System.out.println("\nImprimindo dados da série buscada:\n" + dados);
         }
         private DadosSerie getDadosSerie () {

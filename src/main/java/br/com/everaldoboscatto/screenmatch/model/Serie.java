@@ -15,7 +15,6 @@ public class Serie {
  private String titulo; // Dizendo que Title é um titulo
  private Integer totalTemporadas;
  private Double avaliacao;
-
  @Enumerated(EnumType.STRING)
  private Categoria genero;
  private  String atores;
