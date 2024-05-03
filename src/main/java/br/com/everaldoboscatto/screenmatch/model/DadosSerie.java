@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 // Fazer o mapeamento de Json para a classe
-
-// Notação para ignorar dado que não foi pedido
+// Notação para ignorar dados não solicitados
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record DadosSerie(@JsonAlias("Title") String titulo, // Dizendo que Title é um titulo
                          @JsonAlias("totalSeasons") Integer totalTemporadas,
@@ -16,7 +15,5 @@ public record DadosSerie(@JsonAlias("Title") String titulo, // Dizendo que Title
                          @JsonAlias("Plot") String sinopse) {
 }
 // O Jackson tem a notação  JsonAlias e JsonProperty, ver no material  de apoio.
-
 // Próximo passo:
-
 // Converter os dados para o DadosSerie

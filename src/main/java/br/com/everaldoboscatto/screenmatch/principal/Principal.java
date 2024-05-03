@@ -99,14 +99,17 @@ public class Principal {
             System.out.println("\nSéries buscadas:");
         dadosSeries.forEach(System.out::println);
 
-
-
         // Criar lista de séries
             System.out.println("\nSéries agrupadas por gênero:");
-            List<Serie> series = new ArrayList<>();
-            series = dadosSeries.stream()
-                    .map(d -> new Serie(d))
-                    .collect(Collectors.toList());
+
+            // Buscar no banco de dados
+            List<Serie> series = repositorio.findAll();
+
+            // Buscar na API
+            // List<Serie> series = new ArrayList<>();
+            // series = dadosSeries.stream()
+            //        .map(d -> new Serie(d))
+            //        .collect(Collectors.toList());
             series.stream()
                     .sorted(Comparator.comparing(Serie::getGenero)) // Ordena séries por gênero/categoria
                     .forEach(System.out::println);

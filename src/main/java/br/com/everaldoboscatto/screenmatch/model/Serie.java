@@ -1,4 +1,5 @@
 package br.com.everaldoboscatto.screenmatch.model;
+import br.com.everaldoboscatto.screenmatch.service.ConsultarChatGPT;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -23,6 +24,11 @@ public class Serie {
  @Transient // Não persistir esse atributo
  private List<Episodio> episodios = new ArrayList<>();
 
+ // Construtor padrão
+ public Serie(){
+
+ }
+
  public Serie(DadosSerie dadosSerie) {
   this.titulo = dadosSerie.titulo();
   this.totalTemporadas = dadosSerie.totalTemporadas();
@@ -33,7 +39,7 @@ public class Serie {
   this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim());
   this.atores = dadosSerie.atores();
   this.poster = dadosSerie.poster();
-  this.sinopse = dadosSerie.sinopse(); //ConsultarChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
+  this.sinopse =  ConsultarChatGPT.obterTraducao(dadosSerie.sinopse()).trim(); //dadosSerie.sinopse();
  }
 
  public Long getId() {
