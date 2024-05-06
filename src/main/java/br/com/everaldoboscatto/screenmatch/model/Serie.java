@@ -21,7 +21,11 @@ public class Serie {
  private  String atores;
  private String poster;
  private String sinopse ;
- @Transient // Não persistir esse atributo
+
+ // Atualizar tantos séries quanto episódios e vice e verso
+
+ // Relacionamento um para muitos, entre as entidades Série e Episódio. Onde uma série pode ter muitos episódios.
+ @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
  private List<Episodio> episodios = new ArrayList<>();
 
  // Construtor padrão
@@ -106,6 +110,16 @@ public class Serie {
   this.sinopse = sinopse;
  }
 
+ public List<Episodio> getEpisodios() {
+  return episodios;
+ }
+
+ public void setEpisodios(List<Episodio> episodios) {
+  episodios.forEach(e -> e .setSerie(this)); // Gravar a chave estrangeira na tabela episódios
+
+  this.episodios = episodios;
+ }
+
  @Override
  public String toString() {
   return "Serie{" +
@@ -116,6 +130,7 @@ public class Serie {
           ", atores='" + atores + '\'' +
           ", poster='" + poster + '\'' +
           ", sinopse='" + sinopse + '\'' +
+          ", episodios" + episodios +'\''  +
           '}';
  }
 }

@@ -1,13 +1,12 @@
 package br.com.everaldoboscatto.screenmatch.principal;
+
 import br.com.everaldoboscatto.screenmatch.model.DadosSerie;
 import br.com.everaldoboscatto.screenmatch.model.DadosTemporada;
+import br.com.everaldoboscatto.screenmatch.model.Episodio;
 import br.com.everaldoboscatto.screenmatch.model.Serie;
 import br.com.everaldoboscatto.screenmatch.repository.SerieRepository;
 import br.com.everaldoboscatto.screenmatch.service.ConsumoAPI;
 import br.com.everaldoboscatto.screenmatch.service.ConverterDados;
-import ch.qos.logback.core.encoder.JsonEscapeUtil;
-import org.antlr.v4.runtime.misc.LogManager;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,6 +18,7 @@ public class Principal {
     private final String API_KEY = "&apikey=2f196da8"; // Constante
     private List<DadosSerie> dadosSeries = new ArrayList<>();
     private SerieRepository repositorio;
+    private List<Serie> series = new ArrayList<>();
     public Principal(SerieRepository repositorio) {
         this.repositorio = repositorio;
     }
@@ -72,29 +72,41 @@ public class Principal {
             return dados;
         }
         private void buscarEpisodioPorSerie () {
-            DadosSerie dadosSerie = getDadosSerie();
+            // DadosSerie dadosSerie = getDadosSerie();
 
             // Criar lista de temporadas da série
-            List<DadosTemporada> listaTemporadas = new ArrayList<>();
+            System.out.println("Escolha um série pelo nome:");
+            var nomeSerie = leitura.nextLine();
 
-            // Percorrer total temporadas
-            for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) {
+            Optional<Serie> serie = series.stream()
+                    .filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase()))
+                    .findFirst();
 
-                // Receber dados no formato Json
-                var json = consumo.obterDados(ENDERECO + dadosSerie.titulo().replace(" ", "+") +
-                        "&season=" + i + API_KEY);
+            // Verificar se a série existe
 
-                // Converter dados Json para a classe classe java
-                DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
+            if (serie.isPresent()) {
+                var serieEncontrada = serie.get();
+                List<DadosTemporada> listaTemporadas = new ArrayList<>();
 
-                // Adicionar temporada na lista
-                listaTemporadas.add(dadosTemporada);
+                // Percorrer total temporadas
+                for (int i = 1; i <= serieEncontrada.getTotalTemporadas(); i++) {
+                    var json = consumo.obterDados(ENDERECO + serieEncontrada.getTitulo().replace(" ", "+") +
+                            "&season=" + i + API_KEY);
+                    DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
+                    listaTemporadas.add(dadosTemporada);
+                }
+                listaTemporadas.forEach(System.out::println);
+
+                List<Episodio> episodios = listaTemporadas.stream()
+                        .flatMap(d ->d.episodios().stream()
+                                .map(e -> new Episodio(d.numeroTemporada(), e)))
+                        .collect(Collectors.toList());
+                serieEncontrada.setEpisodios(episodios);
+                repositorio.save(serieEncontrada);
+            } else {
+                System.out.println("Série não encontrada");
             }
-            // Imprimir lsita de temporadas
-            System.out.println("\nImprimindo Temporadas:");
-            listaTemporadas.forEach(System.out::println); // (::) = método de referência
         }
-
         private void listarSeriesBuscadas() {
             System.out.println("\nSéries buscadas:");
         dadosSeries.forEach(System.out::println);
@@ -103,7 +115,8 @@ public class Principal {
             System.out.println("\nSéries agrupadas por gênero:");
 
             // Buscar no banco de dados
-            List<Serie> series = repositorio.findAll();
+            // List<Serie> series = repositorio.findAll(); // Não precisamos mais instanciar, está como atributo
+            series = repositorio.findAll(); // temos uma lista global de séries
 
             // Buscar na API
             // List<Serie> series = new ArrayList<>();
