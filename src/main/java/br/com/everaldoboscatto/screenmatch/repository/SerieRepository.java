@@ -14,5 +14,8 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     // Containing -> se existir, se encontrar
     // IgnoreCase -> indica que deve ignorar maiúsculas e minúsculas
     Optional<Serie> findByTituloContainingIgnoreCase(String nomeSerie);
+
+    // Buscar séries pelo nome do ator e pela avaliação informado
+    List<Serie> findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(String nomeAtor, Double avaliacao);
 }
 
