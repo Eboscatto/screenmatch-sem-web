@@ -22,9 +22,12 @@ public class Serie {
  private String poster;
  private String sinopse ;
 
- // Atualizar tantos séries quanto episódios e vice e verso
-
+ // Atualizar tanto séries quanto episódios
+ // mappedBy, indica como o relacionamento está representado na outra classe da relação. No caso está representado pelo
+ // pelo campo série na classe Episodio, por isso usamos mappedBy = "serie".
  // Relacionamento um para muitos, entre as entidades Série e Episódio. Onde uma série pode ter muitos episódios.
+ // cascadeType.ALL, significa que qualquer alteração feita na classe Serie será aplicada a Episodio também.
+ // fetch.EAGER, significa que os episódios serão carregados sempre que uma série for carregada.
  @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
  private List<Episodio> episodios = new ArrayList<>();
 
@@ -47,76 +50,95 @@ public class Serie {
  }
 
  public Long getId() {
+
   return id;
  }
 
  public void setId(Long id) {
+
   this.id = id;
  }
 
  public String getTitulo() {
+
   return titulo;
  }
 
  public void setTitulo(String titulo) {
+
   this.titulo = titulo;
  }
 
  public Integer getTotalTemporadas() {
+
   return totalTemporadas;
  }
 
  public void setTotalTemporadas(Integer totalTemporadas) {
+
   this.totalTemporadas = totalTemporadas;
  }
 
  public Double getAvaliacao() {
+
   return avaliacao;
  }
 
  public void setAvaliacao(Double avaliacao) {
+
   this.avaliacao = avaliacao;
  }
 
  public Categoria getGenero() {
+
   return genero;
  }
 
  public void setGenero(Categoria genero) {
+
   this.genero = genero;
  }
 
  public String getAtores() {
+
   return atores;
  }
 
  public void setAtores(String atores) {
+
   this.atores = atores;
  }
 
  public String getPoster() {
+
   return poster;
  }
 
  public void setPoster(String poster) {
+
   this.poster = poster;
  }
 
  public String getSinopse() {
+
   return sinopse;
  }
 
  public void setSinopse(String sinopse) {
+
   this.sinopse = sinopse;
  }
 
  public List<Episodio> getEpisodios() {
+
   return episodios;
  }
 
+ // Gravar a chave estrangeira para cada episódio na tabela Episodios
+ // Para garantir o relacionamento bidirecional, precisamos  de, para cada episódio, passar a referência de sua série,
+ // para garantir que as chaves estrangeiras serão salvas.
  public void setEpisodios(List<Episodio> episodios) {
-  episodios.forEach(e -> e .setSerie(this)); // Gravar a chave estrangeira na tabela episódios
-
+  episodios.forEach(e -> e .setSerie(this));
   this.episodios = episodios;
  }
 
