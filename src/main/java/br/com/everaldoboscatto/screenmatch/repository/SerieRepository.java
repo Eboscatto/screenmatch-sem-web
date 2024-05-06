@@ -22,6 +22,10 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     // Buscar as 5 séries mais bem avaliadas
     List<Serie> findTop5ByOrderByAvaliacaoDesc();
 
+    // Buscar séries por categoria/gênero
     List<Serie> findByGenero(Categoria categoria);
+
+    // Buscar séries pelo número total de temporadas
+    List<Serie> findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(int totalTemporadas, double avaliacao);
 }
 

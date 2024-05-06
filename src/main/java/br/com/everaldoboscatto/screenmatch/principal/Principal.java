@@ -56,10 +56,13 @@ public class Principal {
                     break;
                 case 5:
                     busccarSeriesPorAtor();
+                    break;
                 case 6:
                     buscarSeriesTop5();
+                    break;
                 case 7:
                     BuscarSeriesPorCategoria();
+                    break;
                 case 8:
                     BuscarSeriesPelaQtdeTemporadas();
                     break;
@@ -99,9 +102,7 @@ public class Principal {
         // Criar lista de temporadas da série
         System.out.println("Escolha uma série pelo nome:");
         var nomeSerie = leitura.nextLine();
-
         Optional<Serie> serie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
-
 
         // Verificar se a série existe
         if (serie.isPresent()) {
@@ -176,7 +177,7 @@ public class Principal {
                System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));
     }
 
-    // Buscar séries pela categoria/Genero
+    // Método buscar séries pela categoria/Genero informada
     private void BuscarSeriesPorCategoria() {
         System.out.println("Deseja buscar séries de qual categoria/gênero?");
         var nomeGenero = leitura.nextLine();
@@ -186,8 +187,19 @@ public class Principal {
         seriesPorCategoria.forEach(System.out::println);
     }
 
+    // Método buscar séries pela quantidade de temporadas e pela avaliação informada
     private void BuscarSeriesPelaQtdeTemporadas() {
+        System.out.println("Você que ver séries com até quantas temporadas: ");
+        var numeroTemporadas = leitura.nextInt();
+        leitura.nextLine();
 
+        System.out.println("Com avaliação a partir de qual valor? ");
+        var avaliacao = leitura.nextDouble();
+        leitura.nextLine();
+
+        List<Serie> filtroDeSeries = repositorio.findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(numeroTemporadas, avaliacao);
+        System.out.println("Séries com " + numeroTemporadas + " temporadas: ");
+        filtroDeSeries.forEach(s ->
+                System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));
     }
-
 }

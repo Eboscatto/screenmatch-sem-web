@@ -18,7 +18,6 @@ public enum Categoria {
         this.categoriaPortugues = categoriaPortugues;
     }
 
-
     // Interpretar os valores recebidos do Omdb. Ex.: se vem o nome "Action" considerar "ACAO", "Comedy" - "COMEDIA"
     public static Categoria fromString(String text) {
         for (Categoria categoria : Categoria.values()) {
