@@ -1,9 +1,6 @@
 package br.com.everaldoboscatto.screenmatch.principal;
 
-import br.com.everaldoboscatto.screenmatch.model.DadosSerie;
-import br.com.everaldoboscatto.screenmatch.model.DadosTemporada;
-import br.com.everaldoboscatto.screenmatch.model.Episodio;
-import br.com.everaldoboscatto.screenmatch.model.Serie;
+import br.com.everaldoboscatto.screenmatch.model.*;
 import br.com.everaldoboscatto.screenmatch.repository.SerieRepository;
 import br.com.everaldoboscatto.screenmatch.service.ConsumoAPI;
 import br.com.everaldoboscatto.screenmatch.service.ConverterDados;
@@ -33,7 +30,10 @@ public class Principal {
                     2 - Buscar episódios    
                     3 - Listar séries buscadas    
                     4 - Buscar série por título   
-                    5 - Buscar séries por ator                                       
+                    5 - Buscar séries por ator   
+                    6 - Séries Top 5 
+                    7 - Buscar séries por categoria    
+                    8 - Buscar séries pela quantidade de temporadas                               
                                       
                     """;
 
@@ -56,6 +56,13 @@ public class Principal {
                     break;
                 case 5:
                     busccarSeriesPorAtor();
+                case 6:
+                    buscarSeriesTop5();
+                case 7:
+                    BuscarSeriesPorCategoria();
+                case 8:
+                    BuscarSeriesPelaQtdeTemporadas();
+                    break;
                 case 0:
                     System.out.println("Encerrando sistema...");
                     break;
@@ -64,6 +71,8 @@ public class Principal {
             }
         }
     }
+
+    // Método buscar séries na web
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
         Serie serie = new Serie(dados);
@@ -72,6 +81,7 @@ public class Principal {
         System.out.println("\nImprimindo dados da série buscada:\n" + dados);
     }
 
+    // Método pegar daados de série
     private DadosSerie getDadosSerie() {
         System.out.println("Digite o nome da série que de desja buscar:");
         var nomeSerie = leitura.nextLine();
@@ -82,11 +92,12 @@ public class Principal {
         return dados;
     }
 
+    // Método buscar episódio da série
     private void buscarEpisodioPorSerie() {
         // DadosSerie dadosSerie = getDadosSerie();
 
         // Criar lista de temporadas da série
-        System.out.println("Escolha um série pelo nome:");
+        System.out.println("Escolha uma série pelo nome:");
         var nomeSerie = leitura.nextLine();
 
         Optional<Serie> serie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
@@ -117,6 +128,7 @@ public class Principal {
         }
     }
 
+    // Método buscar todas as séries
     private void listarSeriesBuscadas() {
         System.out.println("\nSéries buscadas:");
         dadosSeries.forEach(System.out::println);
@@ -131,6 +143,8 @@ public class Principal {
                 .forEach(System.out::println);
     }
 
+    // Método buscar série pelo nome/título
+
     private void buscarSeriePorTitulo() {
         System.out.println("Escolha um série pelo título: ");
         var nomeSerie = leitura.nextLine();
@@ -143,6 +157,7 @@ public class Principal {
         }
     }
 
+    // Método buscar séries pelo nome do ator e pela avaliação informado
     private void busccarSeriesPorAtor() {
         System.out.println("Digite o nome do ator para busca: ");
         var nomeAtor = leitura.nextLine();
@@ -153,4 +168,26 @@ public class Principal {
         seriesEncontradas.forEach( s ->
                 System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));
     }
+
+    // Método buscar as séries Top5
+    private void buscarSeriesTop5() {
+        List<Serie> seriesTop = repositorio.findTop5ByOrderByAvaliacaoDesc();
+       seriesTop.forEach(s ->
+               System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));
+    }
+
+    // Buscar séries pela categoria/Genero
+    private void BuscarSeriesPorCategoria() {
+        System.out.println("Deseja buscar séries de qual categoria/gênero?");
+        var nomeGenero = leitura.nextLine();
+
+        Categoria categoria = Categoria.fromStringPortugues(nomeGenero);
+        List<Serie> seriesPorCategoria = repositorio.findByGenero(categoria);
+        seriesPorCategoria.forEach(System.out::println);
+    }
+
+    private void BuscarSeriesPelaQtdeTemporadas() {
+
+    }
+
 }
