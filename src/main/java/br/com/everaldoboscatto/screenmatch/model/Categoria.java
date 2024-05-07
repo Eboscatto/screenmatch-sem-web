@@ -5,10 +5,10 @@ public enum Categoria {
     ACAO("Action", "Ação"),// Nome de  categoria vinda do Omdb
     ROMANCE("Romance", "Romance"),
     COMEDIA("Comedy", "Comédia"),
-
     DRAMA("Drama", "Drama"),
-
-    CRIME("Crime", "Crime");
+    CRIME("Crime", "Crime"),
+    AVENTURA("Adventure", "Aventura"),
+    FICCAO("Fiction", "Ficção");
 
     private String categoriaOmdb;
     private String categoriaPortugues;

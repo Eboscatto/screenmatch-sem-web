@@ -13,7 +13,11 @@ public class ScreenmatchApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
 
-		SpringApplication.run(ScreenmatchApplication.class, args);
+		try {
+			SpringApplication.run(ScreenmatchApplication.class, args);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	@Override
 	public void run(String... args) throws Exception {
